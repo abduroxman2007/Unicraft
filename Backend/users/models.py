@@ -16,24 +16,12 @@ class User(AbstractUser):
         MENTOR = 'mentor', 'Mentor'
         ADMIN = 'admin', 'Admin'
 
-    # Make email unique and required
-    email = models.EmailField(unique=True)
-    username = models.CharField(max_length=150, unique=True, blank=True, null=True)
-    
-    # Google OAuth fields
-    google_id = models.CharField(max_length=100, unique=True, blank=True, null=True)
-    profile_picture = models.URLField(blank=True, null=True)
-    
     role = models.CharField(
         max_length=16,
         choices=Role.choices,
         default=Role.STUDENT,
         help_text="Role of the user for authorization flows",
     )
-
-    # Override USERNAME_FIELD to use email
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = []
 
     def is_student(self) -> bool:
         return self.role == self.Role.STUDENT
@@ -45,6 +33,6 @@ class User(AbstractUser):
         return self.role == self.Role.ADMIN
 
     def __str__(self) -> str:
-        return f"{self.email} ({self.role})"
+        return f"{self.username} ({self.role})"
 
 # Create your models here.
