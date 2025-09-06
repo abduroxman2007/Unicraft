@@ -23,6 +23,9 @@ class User(AbstractUser):
         help_text="Role of the user for authorization flows",
     )
 
+    google_id = models.CharField(max_length=100, unique=True, blank=True, null=True)
+    profile_picture = models.URLField(blank=True, null=True)
+
     def is_student(self) -> bool:
         return self.role == self.Role.STUDENT
 
