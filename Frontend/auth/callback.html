@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Processing Authentication...</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #00042d 0%, #033e90 100%);
+            color: white;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        
+        .loading-container {
+            max-width: 400px;
+            padding: 2rem;
+        }
+        
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid #4CAF50;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 2rem;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .message {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .error {
+            color: #ff6b6b;
+        }
+        
+        .success {
+            color: #4CAF50;
+        }
+    </style>
+</head>
+<body>
+    <div class="loading-container">
+        <div class="spinner"></div>
+        <div class="message" id="message">Processing your authentication...</div>
+        <div id="error-message" class="error" style="display: none;"></div>
+    </div>
+
+    <script>
+        // Configuration - UPDATE THESE FOR PRODUCTION
+        const BACKEND_URL = 'https://unicraft-09ht.onrender.com';  // Change to your backend URL
+        const FRONTEND_URL = 'https://unicraft-woad.vercel.app';  // Change to your frontend URL
+
+        // Get URL parameters
+        function getUrlParameter(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+
+        // Show error message
+        function showError(message) {
+            document.getElementById('message').style.display = 'none';
+            document.getElementById('error-message').style.display = 'block';
+            document.getElementById('error-message').textContent = message;
+        }
+
+        // Process the OAuth callback
+        async function processCallback() {
+            const code = getUrlParameter('code');
+            const error = getUrlParameter('error');
+            const state = getUrlParameter('state');
+
+            // Check for errors
+            if (error) {
+                showError('Authentication failed: ' + error);
+                setTimeout(() => {
+                    window.location.href = '../index.html';
+                }, 3000);
+                return;
+            }
+
+            if (!code) {
+                showError('No authorization code received');
+                setTimeout(() => {
+                    window.location.href = '../index.html';
+                }, 3000);
+                return;
+            }
+
+            try {
+                // Exchange code for tokens and user info
+                const response = await fetch(`${BACKEND_URL}/api/users/auth/google/callback/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        code: code,
+                        redirect_uri: `${FRONTEND_URL}/auth/callback.html`
+                    })
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log('Authentication successful:', data);
+                    
+                    // Store tokens (optional, for future use)
+                    localStorage.setItem('access_token', data.access_token);
+                    localStorage.setItem('refresh_token', data.refresh_token);
+                    
+                    // Show success message
+                    document.getElementById('message').textContent = 'Authentication successful! Redirecting...';
+                    document.getElementById('message').className = 'message success';
+                    
+                    // Redirect to congratulations page
+                    setTimeout(() => {
+                        window.location.href = '../congrats.html';
+                    }, 1500);
+                } else {
+                    const errorData = await response.json();
+                    console.error('Authentication failed:', errorData);
+                    showError('Authentication failed. Please try again.');
+                    setTimeout(() => {
+                        window.location.href = '../index.html';
+                    }, 3000);
+                }
+            } catch (error) {
+                console.error('Error during authentication:', error);
+                showError('Something went wrong. Please try again.');
+                setTimeout(() => {
+                    window.location.href = '../index.html';
+                }, 3000);
+            }
+        }
+
+        // Start processing when page loads
+        document.addEventListener('DOMContentLoaded', processCallback);
+    </script>
+</body>
+</html>
