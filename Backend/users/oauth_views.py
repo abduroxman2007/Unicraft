@@ -152,8 +152,9 @@ def google_auth_callback(request):
                 return redirect(f"{settings.FRONTEND_URL}/index.html?error=no_code")
             
             # Exchange code for tokens
-            # Use the frontend redirect URI that was used in the initial authorization request
-            redirect_uri = f"{settings.FRONTEND_URL}/auth/callback.html"
+            # Use the exact redirect_uri that was sent to Google in the initial authorization request
+            # This is now loaded from settings.PUBLIC_BACKEND_URL for better maintainability
+            redirect_uri = f"{settings.PUBLIC_BACKEND_URL}/api/users/auth/google/callback/"
             token_data = exchange_code_for_tokens(code, redirect_uri)
             
             if not token_data:
