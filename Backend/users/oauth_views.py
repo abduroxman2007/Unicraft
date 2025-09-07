@@ -113,13 +113,16 @@ def get_or_create_user(google_user_info):
                 user.save()
         except User.DoesNotExist:
             # Create new user
+            except User.DoesNotExist:
+            # Create new user
             user = User.objects.create(
+                username=email,
                 email=email,
                 google_id=google_id,
                 first_name=name.split(' ')[0] if name else '',
                 last_name=' '.join(name.split(' ')[1:]) if len(name.split(' ')) > 1 else '',
                 profile_picture=picture,
-                role=User.Role.STUDENT,  # Default to student for waitlist
+                role=User.Role.STUDENT,  # Default to student
                 is_active=True,
             )
     
