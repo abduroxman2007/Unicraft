@@ -113,8 +113,6 @@ def get_or_create_user(google_user_info):
                 user.save()
         except User.DoesNotExist:
             # Create new user
-            except User.DoesNotExist:
-            # Create new user
             user = User.objects.create(
                 username=email,
                 email=email,
@@ -122,7 +120,7 @@ def get_or_create_user(google_user_info):
                 first_name=name.split(' ')[0] if name else '',
                 last_name=' '.join(name.split(' ')[1:]) if len(name.split(' ')) > 1 else '',
                 profile_picture=picture,
-                role=User.Role.STUDENT,  # Default to student
+                role=User.Role.STUDENT,  # Default to student for waitlist
                 is_active=True,
             )
     
@@ -292,3 +290,105 @@ def google_auth_url(request):
     auth_url = f"https://accounts.google.com/o/oauth2/v2/auth?{urlencode(params)}"
     
     return JsonResponse({'auth_url': auth_url})
+
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+@csrf_exempt
+def google_auth_token(request):
+    """
+    Handle Google OAuth with ID token
+    """
+    try:
+        data = json.loads(request.body)
+        id_token = data.get('id_token')
+        
+        if not id_token:
+            return JsonResponse({'error': 'ID token is required'}, status=400)
+        
+        # Verify ID token with Google
+        from google.oauth2 import id_token as id_token_verifier
+        from google.auth.transport import requests as google_requests
+        
+        request = google_requests.Request()
+        
+        try:
+            id_info = id_token_verifier.verify_oauth2_token(
+                id_token, request, settings.GOOGLE_OAUTH2_CLIENT_ID
+            )
+            
+            # Get or create user
+            user = get_or_create_user_from_id_token(id_info)
+            
+            # Generate JWT tokens
+            refresh = RefreshToken.for_user(user)
+            access_token = refresh.access_token
+            
+            return JsonResponse({
+                'access_token': str(access_token),
+                'refresh_token': str(refresh),
+                'user': {
+                    'id': user.id,
+                    'email': user.email,
+                    'role': user.role,
+                    'profile_picture': user.profile_picture,
+                }
+            })
+            
+        except ValueError as e:
+            logger.error(f"ID token verification failed: {str(e)}")
+            return JsonResponse({'error': 'Invalid ID token'}, status=400)
+        
+    except json.JSONDecodeError:
+        return JsonResponse({'error': 'Invalid JSON'}, status=400)
+    except Exception as e:
+        logger.error(f"Google auth token error: {str(e)}")
+        return JsonResponse({'error': 'Authentication failed'}, status=500)
+
+
+def get_or_create_user_from_id_token(id_info):
+    """
+    Get or create user from ID token info
+    """
+    email = id_info.get('email')
+    google_id = id_info.get('sub')
+    name = id_info.get('name', '')
+    picture = id_info.get('picture', '')
+    
+    if not email:
+        raise ValueError("Email is required")
+    
+    # Try to get user by Google ID first, then by email
+    user = None
+    if google_id:
+        try:
+            user = User.objects.get(google_id=google_id)
+        except User.DoesNotExist:
+            pass
+    
+    if not user:
+        try:
+            user = User.objects.get(email=email)
+            # Update Google ID if not set
+            if not user.google_id and google_id:
+                user.google_id = google_id
+                user.save()
+        except User.DoesNotExist:
+            # Create new user
+            user = User.objects.create(
+                username=email,
+                email=email,
+                google_id=google_id,
+                first_name=name.split(' ')[0] if name else '',
+                last_name=' '.join(name.split(' ')[1:]) if len(name.split(' ')) > 1 else '',
+                profile_picture=picture,
+                role=User.Role.STUDENT,  # Default to student
+                is_active=True,
+            )
+    
+    # Update profile picture if it changed
+    if picture and user.profile_picture != picture:
+        user.profile_picture = picture
+        user.save()
+    
+    return user
