@@ -1,73 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Welcome to UniCraft! — You're In!</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Welcome to UniCraft! — You're In!</title>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Exclversive:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css" />
-    <link rel="stylesheet" href="congrats.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Exclversive:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="congrats.css" />
 
 </head>
 
 <body>
-    <div class="celebration-particles" id="particles"></div>
-    
-    <div class="logo-congrats">
-        <img src="imgs/logo.svg" alt="UniCraft Logo">
+  <!-- Logo -->
+  <div class="logo-congrats">
+    <img src="imgs/logo.svg" alt="UniCraft Logo" class="logo-svg">
+  </div>
+
+  <!-- Particles -->
+  <div id="particles" class="celebration-particles" aria-hidden="true"></div>
+
+  <!-- Main content -->
+  <main class="congrats-container" role="main" aria-labelledby="congratsTitle">
+    <div class="success-icon" role="img" aria-label="Success">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
     </div>
 
-    <div class="congrats-container">
-        <div class="success-icon">
-            <svg viewBox="0 0 24 24">
-                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
-            </svg>
-        </div>
+    <h1 id="congratsTitle" class="congrats-title">Welcome to UniCraft!</h1>
+    <h2 class="congrats-subtitle">You're officially on the waitlist 🎉</h2>
 
-        <h1 class="congrats-title">Welcome to UniCraft!</h1>
-        <h2 class="congrats-subtitle">You're officially on the waitlist! 🎉</h2>
-        
-        <p class="congrats-message">
-            Thank you for joining our community of ambitious students! 
-            We'll notify you as soon as we launch and you can start connecting 
-            with mentors who've been exactly where you are.
-        </p>
+    <p class="congrats-message">
+      Thank you for joining our community of ambitious students!
+      We'll notify you as soon as we launch and you can start connecting
+      with mentors who've been exactly where you are.
+    </p>
 
-        <a href="index.html" class="back-to-home">Back to Home</a>
-    </div>
+    <a class="back-to-home" href="index.html">Back to Home</a>
+  </main>
 
-    <script>
-        // Create floating particles
-        function createParticles() {
-            const particlesContainer = document.getElementById('particles');
-            const particleCount = 50;
+  <script>
+    function createParticles() {
+      const container = document.getElementById('particles');
+      if (!container) return;
+      container.innerHTML = '';
+      const count = 35;
+      for (let i = 0; i < count; i++) {
+        const p = document.createElement('div');
+        p.className = 'particle';
 
-            for (let i = 0; i < particleCount; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                particle.style.left = Math.random() * 100 + '%';
-                particle.style.top = Math.random() * 100 + '%';
-                particle.style.animationDelay = Math.random() * 3 + 's';
-                particle.style.animationDuration = (Math.random() * 3 + 2) + 's';
-                particlesContainer.appendChild(particle);
-            }
-        }
+        const size = (Math.random() * 8) + 4; // 4 - 12px
+        p.style.width = p.style.height = size + 'px';
+        p.style.left = (Math.random() * 100) + '%';
+        p.style.top = (Math.random() * 100) + '%';
 
-        // Start the celebration
-        document.addEventListener('DOMContentLoaded', function() {
-            createParticles();
-            
-            // Add some confetti effect
-            setTimeout(() => {
-                // You can add more celebration effects here
-                console.log('Welcome to UniCraft! 🎉');
-            }, 1000);
-        });
-    </script>
+        // allowed palette only
+        const colorChoice = Math.random() < 0.5 ? 'var(--cardTint1)' : 'var(--cardTint2)';
+        p.style.background = colorChoice;
+
+        p.style.animationDelay = (Math.random() * 4) + 's';
+        p.style.animationDuration = (Math.random() * 4 + 3) + 's';
+        container.appendChild(p);
+      }
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', createParticles);
+    } else {
+      createParticles();
+    }
+  </script>
 </body>
-
 </html>
