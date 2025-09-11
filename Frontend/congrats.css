@@ -1,135 +1,138 @@
+:root {
+  --bg:#00042d;
+  --text:#ffffff;
+  --muted:rgba(255,255,255,.65);
+  --cardBorder:rgb(120, 120, 120);
+  --cardTint1:#033e90;
+  --cardTint2:#cfcfcf;
+  --btnBg:#00042d;
+  --btnText:#fff;
+  --ring:rgba(74,144,226,.18);
+}
 
-    :root{
-      --bg:#00042d;
-      --text:#ffffff;
-      --muted:rgba(255,255,255,.65);
-      --cardBorder:rgb(120, 120, 120);
-      --cardTint1:#033e90;
-      --cardTint2:#cfcfcf;
-      --btnBg:#00042d;
-      --btnText:#fff;
-      --ring:rgba(74,144,226,.18);
-    }
+/* Global */
+* { box-sizing:border-box; margin:0; padding:0 }
+html, body { height:100% }
+body {
+  font-family:'Poppins', system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, 'Helvetica Neue', Arial, sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  height:100svh;
+  overflow-x:hidden;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+}
 
-    *{box-sizing:border-box;margin:0;padding:0}
-    html,body{height:100%}
-    body{
-      font-family:'Poppins',system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,'Helvetica Neue',Arial,sans-serif;
-      background:var(--bg);
-      color:var(--text);
-      height:100svh; height:100vh;
-      overflow:hidden; /* no scroll */
-      display:flex;
-      align-items:center;
-      justify-content:center;
-    }
+/* Particles */
+.celebration-particles {
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:1;
+}
+.particle {
+  position:absolute;
+  border-radius:50%;
+  will-change:transform, opacity;
+  background:var(--cardTint1);
+  opacity:.9;
+  animation-name:floaty;
+  animation-iteration-count:infinite;
+  animation-timing-function:ease-in-out;
+}
 
-    /* Logo */
-    .logo-congrats {
-      position: absolute;
-      top: 2rem;
-      left: 2rem;
-      z-index: 20;
-    }
-    .logo-congrats img {
-      height: 3rem;
-      width: auto;
-      filter: brightness(0) invert(1);
-    }
+/* Main container */
+.congrats-container {
+  position:relative;
+  z-index:2;
+  padding:2rem;
+  max-width:720px;
+  width:90%;
+}
 
-    /* Particles */
-    .celebration-particles {
-      position:fixed;
-      inset:0;
-      pointer-events:none;
-      z-index:1;
-    }
-    .particle{
-      position:absolute;
-      border-radius:50%;
-      will-change:transform,opacity;
-      background:var(--cardTint1);
-      opacity:.9;
-      animation-name:floaty;
-      animation-iteration-count:infinite;
-      animation-timing-function:ease-in-out;
-    }
+/* Clickable logo */
+.success-logo {
+  display:inline-block;
+  margin:0 auto 1.5rem;
+  transition:transform 0.25s ease, opacity 0.25s ease;
+  animation:bounceIn .9s cubic-bezier(.22,.9,.37,1) both;
+}
+.success-logo img {
+  height:5rem; /* smaller size */
+  width:auto;
+  filter:brightness(0) invert(1);
+}
+.success-logo:hover {
+  transform:scale(1.08);
+  opacity:0.85;
+}
 
-    /* Content */
-    .congrats-container{
-      position:relative;
-      z-index:2;
-      text-align:center;
-      padding:2rem;
-      max-width:720px;
-      width:90%;
-    }
+/* Headings */
+.congrats-title {
+  font-family:'Exclversive', sans-serif;
+  font-size:clamp(2rem, 6vw, 3.5rem);
+  color:var(--text);
+  margin-bottom:.6rem;
+  animation:slideInUp .9s ease-out .15s both;
+}
+.congrats-subtitle {
+  color:var(--muted);
+  font-size:clamp(1.1rem, 3vw, 1.6rem);
+  margin-bottom:1.25rem;
+  animation:slideInUp .9s ease-out .25s both;
+}
 
-    .success-icon{
-      width:120px;height:120px;border-radius:999px;
-      background:var(--cardTint1);
-      display:flex;align-items:center;justify-content:center;
-      margin:0 auto 1.5rem;
-      box-shadow:0 20px 40px rgba(0,0,0,.4);
-      animation:bounceIn .9s cubic-bezier(.22,.9,.37,1) both;
-    }
-    .success-icon svg{ width:60px;height:60px; fill:var(--text) }
+/* Message */
+.congrats-message {
+  color:var(--muted);
+  max-width:620px;
+  margin:0 auto 2rem;
+  line-height:1.6;
+  animation:slideInUp .9s ease-out .35s both;
+}
 
-    .congrats-title{
-      font-family:'Exclversive',sans-serif;
-      font-size:clamp(2rem,6vw,3.5rem);
-      color:var(--text);
-      margin-bottom:.6rem;
-      animation:slideInUp .9s ease-out .15s both;
-    }
-    .congrats-subtitle{
-      color:var(--muted);
-      font-size:clamp(1.1rem,3vw,1.6rem);
-      margin-bottom:1.25rem;
-      animation:slideInUp .9s ease-out .25s both;
-    }
+/* Button */
+.back-to-home {
+  display:inline-block;
+  padding:1rem 2rem;
+  background:var(--btnBg);
+  color:var(--btnText);
+  border-radius:50px;
+  text-decoration:none;
+  font-weight:600;
+  box-shadow:0 10px 30px rgba(0,0,0,.45);
+  transition:transform .2s ease, box-shadow .2s ease;
+  animation:slideInUp .9s ease-out .45s both;
+}
+.back-to-home:hover {
+  transform:translateY(-3px) scale(1.03);
+  box-shadow:0 15px 40px rgba(0,0,0,.55);
+}
 
-    .congrats-message{
-      color:var(--muted);
-      max-width:620px;
-      margin:0 auto 2rem;
-      line-height:1.6;
-      animation:slideInUp .9s ease-out .35s both;
-    }
+/* Animations */
+@keyframes bounceIn {
+  0% { transform:scale(.3); opacity:0 }
+  50% { transform:scale(1.05) }
+  70% { transform:scale(.9) }
+  100% { transform:scale(1); opacity:1 }
+}
+@keyframes slideInUp {
+  0% { transform:translateY(40px); opacity:0 }
+  100% { transform:translateY(0); opacity:1 }
+}
+@keyframes floaty {
+  0% { transform:translateY(0) scale(1); opacity:.9 }
+  50% { transform:translateY(-25px) scale(1.15); opacity:.7 }
+  100% { transform:translateY(0) scale(1); opacity:.9 }
+}
 
-    .back-to-home{
-      display:inline-block;
-      padding:1rem 2rem;
-      background:var(--btnBg);
-      color:var(--btnText);
-      border-radius:50px;
-      text-decoration:none;
-      font-weight:600;
-      box-shadow:0 10px 30px rgba(0,0,0,.45);
-      transition:transform .2s ease,box-shadow .2s ease;
-      animation:slideInUp .9s ease-out .45s both;
-    }
-    .back-to-home:hover{ transform:translateY(-3px) scale(1.03); box-shadow:0 15px 40px rgba(0,0,0,.55) }
-
-    /* Animations */
-    @keyframes bounceIn{
-      0%{ transform:scale(.3); opacity:0 }
-      50%{ transform:scale(1.05) }
-      70%{ transform:scale(.9) }
-      100%{ transform:scale(1); opacity:1 }
-    }
-    @keyframes slideInUp{
-      0%{ transform:translateY(40px); opacity:0 }
-      100%{ transform:translateY(0); opacity:1 }
-    }
-    @keyframes floaty{
-      0%{ transform:translateY(0) scale(1); opacity:.9 }
-      50%{ transform:translateY(-25px) scale(1.15); opacity:.7 }
-      100%{ transform:translateY(0) scale(1); opacity:.9 }
-    }
-
-    @media (max-width:768px){
-      .success-icon{ width:100px; height:100px }
-      .success-icon svg{ width:50px; height:50px }
-    }
-  
+/* Responsive tweaks */
+@media (max-width:768px) {
+  .success-logo img { height:2.8rem; }
+}
+@media (max-width:480px) {
+  .success-logo img { height:2.5rem; }
+  .back-to-home { padding:.8rem 1.6rem; font-size:.95rem; }
+}

@@ -9,23 +9,18 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Exclversive:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="congrats.css" />
-
 </head>
 
 <body>
-  <!-- Logo -->
-  <div class="logo-congrats">
-    <img src="imgs/logo.svg" alt="UniCraft Logo" class="logo-svg">
-  </div>
-
   <!-- Particles -->
   <div id="particles" class="celebration-particles" aria-hidden="true"></div>
 
   <!-- Main content -->
   <main class="congrats-container" role="main" aria-labelledby="congratsTitle">
-    <div class="success-icon" role="img" aria-label="Success">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
-    </div>
+    <!-- Center clickable logo -->
+    <a href="javascript:history.back()" class="success-logo" role="link" aria-label="Back to previous page">
+      <img src="imgs/logo.svg" alt="UniCraft Logo" class="logo-svg">
+    </a>
 
     <h1 id="congratsTitle" class="congrats-title">Welcome to UniCraft!</h1>
     <h2 class="congrats-subtitle">You're officially on the waitlist 🎉</h2>
