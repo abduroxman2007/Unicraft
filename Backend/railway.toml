@@ -4,5 +4,5 @@ builder = "NIXPACKS"
 [deploy]
 releaseCommand = "python manage.py collectstatic --noinput && python manage.py migrate"
 startCommand = "gunicorn unimentor.wsgi --bind 0.0.0.0:$PORT"
-healthcheckPath = "/"
+healthcheckPath = "/api/schema/"
 healthcheckTimeout = 120
