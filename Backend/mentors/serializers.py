@@ -11,9 +11,9 @@ class MentorProfileSerializer(serializers.ModelSerializer):
         model = MentorProfile
         fields = [
             'id', 'user', 'university', 'program', 'year', 'achievements',
-            'languages', 'price_per_hour', 'availability', 'is_verified', 'verification_document_url',
+            'languages', 'availability', 'status', 'verification_document_url',
         ]
-        read_only_fields = ['id', 'is_verified']
+        read_only_fields = ['id', 'status']
 
     def create(self, validated_data):
         user = self.context['request'].user
