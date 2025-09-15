@@ -1,4 +1,3 @@
-
 from pathlib import Path
 import os
 from datetime import timedelta
@@ -45,12 +44,21 @@ INSTALLED_APPS = [
     'drf_spectacular',
     'rest_framework_simplejwt',
 
+    # Allauth for social login compatibility
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
+
     # Local apps
     'bookings',
     'mentors',
     'payments',
     'reviews',
     'users',
+
+    
 ]
 
 AUTH_USER_MODEL = 'users.User'
@@ -63,6 +71,7 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
@@ -196,3 +205,5 @@ CSRF_TRUSTED_ORIGINS = os.environ.get(
 
 
 CORS_ALLOW_CREDENTIALS = True
+
+SITE_ID = 1

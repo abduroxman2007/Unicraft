@@ -24,7 +24,7 @@ class User(AbstractUser):
     )
 
     google_id = models.CharField(max_length=100, unique=True, blank=True, null=True)
-    profile_picture = models.URLField(blank=True, null=True)
+    profile_picture = models.TextField(blank=True, null=True)
 
     # Add fields from backup for import compatibility
     full_name = models.CharField(max_length=255, blank=True, null=True)
