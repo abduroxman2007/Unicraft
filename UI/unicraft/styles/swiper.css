@@ -1,0 +1,72 @@
+/* Swiper CSS */
+@import 'swiper/css';
+@import 'swiper/css/navigation';
+@import 'swiper/css/pagination';
+
+/* Custom Swiper Styles */
+.company-swiper .swiper-slide {
+  height: auto;
+}
+
+.company-swiper .swiper-wrapper {
+  align-items: center;
+}
+
+.experts-swiper .swiper-slide {
+  height: auto;
+  width: 320px !important;
+}
+
+.experts-swiper .swiper-wrapper {
+  align-items: stretch;
+}
+
+.experts-swiper {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+}
+
+.experts-swiper::-webkit-scrollbar {
+  display: none; /* WebKit */
+}
+
+.experts-swiper .swiper-wrapper {
+  overflow: visible;
+}
+
+/* Hide scrollbar for the entire section */
+section {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+}
+
+section::-webkit-scrollbar {
+  display: none; /* WebKit */
+}
+
+.expert-swiper-pagination .swiper-pagination-bullet {
+  background: #d1d5db;
+  opacity: 1;
+}
+
+.expert-swiper-pagination .swiper-pagination-bullet-active {
+  background: #3b82f6;
+}
+
+.categories-swiper .swiper-slide {
+  height: auto;
+  width: 256px !important;
+}
+
+.categories-swiper .swiper-wrapper {
+  align-items: stretch;
+}
+
+.categories-swiper {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+}
+
+.categories-swiper::-webkit-scrollbar {
+  display: none; /* WebKit */
+}
